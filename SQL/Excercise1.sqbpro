@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="Excercise.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="890"/><column_width id="4" width="0"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Manufacturers" custom_title="0" dock_id="1" table="4,13:mainManufacturers"/><dock_state state="000000ff00000000fd00000001000000020000033b00000276fc0100000001fb000000160064006f0063006b00420072006f007700730065003101000000000000033b0000011800ffffff0000033b0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Manufacturers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="57"/><column index="2" value="165"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Products" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="124"/><column index="3" value="36"/><column index="4" value="83"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="Day1">CREATE TABLE if not EXISTS Manufacturers(
+code INTEGER,
+Name TEXT NOT NULL,
+PRIMARY KEY (code)
+);
+
+CREATE TABLE if not EXISTS Products (
+code INTEGER,
+Name TEXT NOT NULL,
+Price INTEGER NOT NULL,
+Manufacturers INTEGER NOT NULL,
+PRIMARY KEY (code)
+
+)</sql><sql name="Data - Day 1">INSERT INTO Manufacturers(code,Name) VALUES(1,'Sony');
+INSERT INTO Manufacturers(code,Name) VALUES(2,'Creative Labs');
+INSERT INTO Manufacturers(code,Name) VALUES(3,'Hewlett-Packard');
+INSERT INTO Manufacturers(code,Name) VALUES(4,'Iomega');
+INSERT INTO Manufacturers(code,Name) VALUES(5,'Fujitsu');
+INSERT INTO Manufacturers(code,Name) VALUES(6,'Winchester');
+
+ALTER TABLE Products RENAME COLUMN Manufacturers to 'Manufacturer';
+
+INSERT INTO Products(code,Name,Price,Manufacturer) VALUES(1,'Hard drive',240,5);
+INSERT INTO Products(code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
+INSERT INTO Products(code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
+INSERT INTO Products(code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
+INSERT INTO Products(code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);</sql><sql name="Excercise">-- 1.1 Select the names of all the products in the store.
+SELECT Name FROM Products;
+
+-- 1.2 Select the names and the prices of all the products in the store.
+SELECT Name , Price FROM Products;
+
+-- 1.3 Select the name of the products with a price less than or equal to $200.
+SELECT Name FROM Products where Price&lt;= 200;
+
+-- 1.4 Select all the products with a price between $60 and $120.
+SELECT * FROM Products where Price&lt;= 120 AND Price&gt;=60;
+
+-- 1.5 Select the name and price in cents (i.e., the price must be multiplied by 100).
+SELECT *, Price * 100 New_Price FROM Products;
+
+--1.6 Compute the average price of all the products.
+SELECT avg(Price) from Products;
+
+-- 1.7 Compute the average price of all products with manufacturer code equal to 2.
+SELECT avg(Price) from Products WHERE code = 2;
+
+-- 1.8 Compute the number of products with a price larger than or equal to $180. **
+SELECT count(*) from Products where price &gt;= 180;
+
+-- 1.9 Select the name and price of all products with a price larger than or equal to $180. 
+-- and sort first by price (in descending order), and then by name (in ascending order).
+SELECT Name, Price from Products WHERE price &gt;= 180
+ORDER BY Price DESC; Name ASC;
+
+-- 1.10 Select all the data from the products, including all the data for each product's manufacturer
+SELECT Products.*, Manufacturers.Name from Products
+JOIN Manufacturers on Manufacturers.code = Products.Manufacturer;
+
+-- 1.11 Select the product name, price, and manufacturer name of all the products.
+select Products.Name, Products.Price, Manufacturers.Name from Products
+JOIN Manufacturers on Manufacturers.code = Products.Manufacturer;
+
+-- 1.12 Select the average price of each manufacturer's products, showing only the manufacturer's code.
+SELECT avg(Products.Price) AS Average_Price, Manufacturers.code from Products
+JOIN Manufacturers on Manufacturers.code = Products.Manufacturer
+GROUP BY Manufacturers.code;
+
+-- 1.13 Select the average price of each manufacturer's products, showing the manufacturer's name.
+SELECT avg(Products.Price) AS Average_Price, Manufacturers.Name from Products
+JOIN Manufacturers on Manufacturers.code = Products.Manufacturer
+GROUP BY Manufacturers.Name;
+
+
+
+
+
+
+
+
+
+
+</sql><current_tab id="2"/></tab_sql></sqlb_project>
