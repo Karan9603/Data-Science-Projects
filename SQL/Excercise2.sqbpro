@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="Excercise2.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="982"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Departments" custom_title="0" dock_id="1" table="4,11:mainDepartments"/><dock_state state="000000ff00000000fd00000001000000020000033b00000276fc0100000001fb000000160064006f0063006b00420072006f007700730065003101000000000000033b0000011800ffffff0000033b0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Departments" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="1" mode="0"/></sort><column_widths><column index="1" value="36"/><column index="2" value="124"/><column index="3" value="54"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Employees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="78"/><column index="2" value="78"/><column index="3" value="78"/><column index="4" value="75"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="Tabel">CREATE TABLE IF NOT EXISTS Departments (
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="Excercise2.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="982"/><column_width id="4" width="0"/><expanded_item id="1" parent="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Employees" custom_title="0" dock_id="1" table="4,9:mainEmployees"/><dock_state state="000000ff00000000fd00000001000000020000033b00000276fc0100000001fb000000160064006f0063006b00420072006f007700730065003101000000000000033b0000011e00ffffff0000033b0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Departments" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="1" mode="0"/></sort><column_widths><column index="1" value="36"/><column index="2" value="140"/><column index="3" value="54"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Employees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="78"/><column index="2" value="78"/><column index="3" value="78"/><column index="4" value="75"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="Tabel">CREATE TABLE IF NOT EXISTS Departments (
   Code INTEGER,
   Name TEXT NOT NULL,
   Budget decimal NOT NULL,
@@ -87,46 +87,45 @@ GROUP BY Department
 HAVING Employ_depart &gt;2;
 
 
--- ** 2.15 Select the name and last name of employees working for the two departments with lowest budget. **
-SELECT Employees.Name, Employees.LastName FROM Employees
-JOIN Departments on Departments.Code = Employees.Department
---GROUP by Departments.Budget 
-ORDER by Departments.Budget ASC LIMIT 4;
+-- ** 2.15 Select the name and last name of employees working for the two departments with lowest budget. **
+
+SELECT Name, LastName FROM Employees where Department in (
+select Code from Departments ORDER by Budget ASC LIMIT 2);
 
--- 2.16  Add a new department called &quot;Quality Assurance&quot;, with a budget of $40,000 and departmental code 11.
-INSERT INTO Departments (Name,Budget,Code) VALUES (&quot;Quality Assurance&quot;, 40000 , 11);
-
+-- 2.16  Add a new department called &quot;Quality Assurance&quot;, with a budget of $40,000 and departmental code 11.
+INSERT INTO Departments (Name,Budget,Code) VALUES (&quot;Quality Assurance&quot;, 40000 , 11);
 
--- And Add an employee called &quot;Mary Moore&quot; in that department, with SSN 847-21-9811.
-INSERT INTO Employees (Name, LastName,SSN, Department) VALUES ('Mary','Moore',847219811, 11);
-
---UPDATE Employees
---SET SSN = 847219811 WHERE Name = 'Mary'
 
--- 2.17 Reduce the budget of all departments by 10%.
-SELECT *, Budget*0.90 as New_Budget FROM Departments;
-
+-- And Add an employee called &quot;Mary Moore&quot; in that department, with SSN 847-21-9811.
+INSERT INTO Employees (Name, LastName,SSN, Department) VALUES ('Mary','Moore',847219811, 11);
 
--- 2.18 Reassign all employees from the Research department (code 77) to the IT department (code 14).
-
---SELECT * FROM Employees order by Department; -- for check only
-
-UPDATE Employees
-SET Department = 14 where Department = 77;
-
-
+--UPDATE Employees
+--SET SSN = 847219811 WHERE Name = 'Mary'
 
--- 2.19 Delete from the table all employees in the IT department (code 14).
-DELETE FROM Employees
-WHERE Department = 14;
-
+-- 2.17 Reduce the budget of all departments by 10%.
+SELECT *, Budget*0.90 as New_Budget FROM Departments;
 
---  ** 2.20 Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
-DELETE FROM Employees
-JOIN Departments on Departments.Code = Employees.Department
-WHERE Departments.Budget &gt;= 60000;
-
-
+
+-- 2.18 Reassign all employees from the Research department (code 77) to the IT department (code 14).
+
+--SELECT * FROM Employees order by Department; -- for check only
+
+UPDATE Employees
+SET Department = 14 where Department = 77;
+
+
+
+-- 2.19 Delete from the table all employees in the IT department (code 14).
+DELETE FROM Employees
+WHERE Department = 14;
+
+
+--  ** 2.20 Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
+DELETE FROM Employees
+WHERE Department in (
+select Code FROM Departments where Budget &gt;= 60000);
+
+-- SELECT * from Employees; -- for check
 
 -- 2.21 Delete from the table all employees.
 DELETE from Employees;</sql><current_tab id="2"/></tab_sql></sqlb_project>
